@@ -3,7 +3,7 @@ require 'fileutils'
 require 'chronic'
 require 'singleton'
 
-if defined? RAILS_ENV and RAILS_ENV == "development"
+if defined? Rails.env and Rails.env.development?
   if ENV['USER'] == 'eweaver'
     require 'ruby-debug'
     Debugger.start
@@ -33,4 +33,3 @@ if (ActiveRecord::Base.connection rescue nil) # XXX Not sure why this needed to 
   
   require 'ultrasphinx/spell'
 end
-

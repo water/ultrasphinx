@@ -14,19 +14,19 @@ module Ultrasphinx
   
   SUBDIR = "config/ultrasphinx"
   
-  DIR = "#{RAILS_ROOT}/#{SUBDIR}"
+  DIR = "#{Rails.root}/#{SUBDIR}"
   
   THIS_DIR = File.expand_path(File.dirname(__FILE__))
 
-  CONF_PATH = "#{DIR}/#{RAILS_ENV}.conf"
+  CONF_PATH = "#{DIR}/#{Rails.env}.conf"
   
-  ENV_BASE_PATH = "#{DIR}/#{RAILS_ENV}.base" 
+  ENV_BASE_PATH = "#{DIR}/#{Rails.env}.base" 
   
   GENERIC_BASE_PATH = "#{DIR}/default.base"
   
   BASE_PATH = (File.exist?(ENV_BASE_PATH) ? ENV_BASE_PATH : GENERIC_BASE_PATH)
   
-  raise ConfigurationError, "Please create a '#{SUBDIR}/#{RAILS_ENV}.base' or '#{SUBDIR}/default.base' file in order to use Ultrasphinx in your #{RAILS_ENV} environment." unless File.exist? BASE_PATH # XXX lame
+  raise ConfigurationError, "Please create a '#{SUBDIR}/#{Rails.env}.base' or '#{SUBDIR}/default.base' file in order to use Ultrasphinx in your #{Rails.env} environment." unless File.exist? BASE_PATH # XXX lame
 
   # Some miscellaneous constants
 
@@ -100,8 +100,8 @@ module Ultrasphinx
       puts msg[0..0].upcase + msg[1..-1]
     else
       msg = "** ultrasphinx: #{msg}"
-      if defined?(RAILS_DEFAULT_LOGGER) && RAILS_DEFAULT_LOGGER
-        RAILS_DEFAULT_LOGGER.warn msg
+      if defined?(Rails) && Rails.logger
+        Rails.logger.warn msg
       else
         STDERR.puts msg
       end
@@ -112,8 +112,8 @@ module Ultrasphinx
   # Debug-mode logger.  
   def self.log msg
     # XXX Method name is stupid.
-    if defined?(RAILS_DEFAULT_LOGGER) && RAILS_DEFAULT_LOGGER
-      RAILS_DEFAULT_LOGGER.debug msg
+    if defined?(Rails) && Rails.logger
+      Rails.logger.debug msg
     else
       STDERR.puts msg
     end
@@ -175,7 +175,7 @@ module Ultrasphinx
       hash          
     else
       # We can't raise here because you may be generating the configuration for the first time
-      Ultrasphinx.say "configuration file not found for #{RAILS_ENV.inspect} environment"
+      Ultrasphinx.say "configuration file not found for #{Rails.env.inspect} environment"
       Ultrasphinx.say "please run 'rake ultrasphinx:configure'"
     end      
   end  
