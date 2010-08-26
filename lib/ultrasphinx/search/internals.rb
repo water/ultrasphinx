@@ -119,6 +119,11 @@ module Ultrasphinx
                 # XXX Hack to force floats to be floats
                 value = value.to_f if type == 'float'
                 # Just bomb the filter in there
+
+                if type == 'multi'
+                  # hack to force crc32 conversion on multi-value attributes
+                  value.map! { |v| Zlib.crc32(v) }
+                end
                 request.filters << Riddle::Client::Filter.new(field, Array(value), exclude)
               when Range
                 # Make sure ranges point in the right direction
@@ -129,8 +134,14 @@ module Ultrasphinx
                 min, max = min.to_f, max.to_f if type == 'float'
                 request.filters << Riddle::Client::Filter.new(field, min..max, exclude)
               when String
-                # XXX Hack to move text filters into the query
-                opts['parsed_query'] << " @#{field} #{value}"
+                if type == 'multi'
+                  # hack to force crc32 conversion on multi-value attributes
+                  value = Zlib.crc32(value)
+                  request.filters << Riddle::Client::Filter.new(field, Array(value), exclude)
+                else
+                  # XXX Hack to move text filters into the query
+                  opts['parsed_query'] << " @#{field} #{value}"
+                end
               else
                 raise NoMethodError
             end

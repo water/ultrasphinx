@@ -320,7 +320,7 @@ Note that your database is never changed by anything Ultrasphinx does.
       @options['indexes'] = Array(@options['indexes']).join(" ")
             
       raise UsageError, "Weights must be a Hash" unless @options['weights'].is_a? Hash
-      raise UsageError, "Filters must be a Hash" unless @options['filters'].is_a? Hash
+      # raise UsageError, "Filters must be a Hash" unless @options['filters'].is_a? Hash
       
       @options['parsed_query'] = parse(query)
   
