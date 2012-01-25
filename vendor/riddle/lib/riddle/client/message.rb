@@ -10,28 +10,31 @@ module Riddle
       
       # Append raw data (only use if you know what you're doing)
       def append(*args)
-        return if args.length == 0
-        
         args.each { |arg| @message << arg }
       end
       
       # Append a string's length, then the string itself
       def append_string(str)
-        @message << [str.send(@size_method)].pack('N') + str
+        string = Riddle.encode(str.dup, 'ASCII-8BIT')
+        @message << [string.send(@size_method)].pack('N') + string
       end
       
       # Append an integer
       def append_int(int)
-        @message << [int].pack('N')
+        @message << [int.to_i].pack('N')
       end
       
       def append_64bit_int(int)
-        @message << [int >> 32, int & 0xFFFFFFFF].pack('NN')
+        @message << [int.to_i >> 32, int.to_i & 0xFFFFFFFF].pack('NN')
       end
       
       # Append a float
       def append_float(float)
         @message << [float].pack('f').unpack('L*').pack("N")
+      end
+      
+      def append_boolean(bool)
+        append_int(bool ? 1 : 0)
       end
       
       # Append multiple integers

@@ -1,4 +1,4 @@
-DROP TABLE `people`;
+DROP TABLE IF EXISTS `people`;
 
 CREATE TABLE `people` (
   `id` int(11) NOT NULL auto_increment,
@@ -13,4 +13,4 @@ CREATE TABLE `people` (
   `email` varchar(100) NOT NULL,
   `birthday` datetime NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8

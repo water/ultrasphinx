@@ -1,8 +1,8 @@
-require 'spec/spec_helper'
+require 'spec_helper'
 
-describe "Sphinx Updates" do
+describe "Sphinx Updates", :live => true do
   before :each do
-    @client = Riddle::Client.new("localhost", 3313)
+    @client = Riddle::Client.new("localhost", 9313)
   end
   
   it "should update a single record appropriately" do
