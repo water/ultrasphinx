@@ -191,7 +191,7 @@ module Riddle
 
     # Backwards compatible writer to the @servers array.
     def server=(server)
-      @servers = server.to_a
+      @servers = Array(server)
     end
 
     # Set the geo-anchor point - with the names of the attributes that contain

@@ -12,19 +12,17 @@ module Ultrasphinx
       private
       
       def build_request_with_options opts
-      
+
         request = Riddle::Client.new
-        
+
         # Basic options
-        request.instance_eval do          
-          @server = Ultrasphinx::CLIENT_SETTINGS['server_host']
-          @port = Ultrasphinx::CLIENT_SETTINGS['server_port']          
-          @match_mode = :extended # Force extended query mode
-          @offset = opts['per_page'] * (opts['page'] - 1)
-          @limit = opts['per_page']
-          @max_matches = [@offset + @limit + Ultrasphinx::Search.client_options['max_matches_offset'], MAX_MATCHES].min
-        end
-          
+        request.server = Ultrasphinx::CLIENT_SETTINGS['server_host']
+        request.port = Ultrasphinx::CLIENT_SETTINGS['server_port'].to_i
+        request.match_mode = :extended # Force extended query mode
+        request.offset = opts['per_page'] * (opts['page'] - 1)
+        request.limit = opts['per_page']
+        request.max_matches = [request.offset + request.limit + Ultrasphinx::Search.client_options['max_matches_offset'], MAX_MATCHES].min
+
         # Geosearch location
         loc = opts['location']
         loc.stringify_keys!
